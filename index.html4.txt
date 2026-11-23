@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Las cajas de la feria escolar - Factorización por factor común</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf8f2;
+            --card-bg: #ffffff;
+            --primary: #e06d53;
+            --primary-dark: #c4543b;
+            --secondary: #2a9d8f;
+            --accent: #e9c46a;
+            --text-main: #264653;
+            --text-muted: #5c7682;
+            --math-bg: #f0f7f6;
+            --border-radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.75;
+            padding-bottom: 4rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, #264653 0%, #2a9d8f 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 3.5rem 1.5rem 4.5rem;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 10px 25px rgba(38, 70, 83, 0.15);
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--text-main);
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        header h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+
+        header p.subtitle {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .container {
+            max-width: 820px;
+            margin: -2.2rem auto 0;
+            padding: 0 1.25rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2.2rem 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(38, 70, 83, 0.07);
+            border-top: 6px solid var(--secondary);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .page-card:nth-child(even) {
+            border-top-color: var(--primary);
+        }
+
+        .page-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(38, 70, 83, 0.11);
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 2px dashed #e6ecee;
+            padding-bottom: 0.85rem;
+        }
+
+        .page-number {
+            background-color: var(--secondary);
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.3rem 0.85rem;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        .page-card:nth-child(even) .page-number {
+            background-color: var(--primary);
+        }
+
+        .page-header h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .page-card p {
+            margin-bottom: 1.1rem;
+            font-size: 1.08rem;
+        }
+
+        .page-card p:last-child {
+            margin-bottom: 0;
+        }
+
+        .math-box {
+            background-color: var(--math-bg);
+            border-left: 5px solid var(--secondary);
+            border-radius: 10px;
+            padding: 1rem 1.4rem;
+            margin: 1.25rem 0;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.35rem;
+            color: var(--text-main);
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .math-inline {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: var(--primary-dark);
+            background-color: #fdf0ed;
+            padding: 0.1rem 0.45rem;
+            border-radius: 6px;
+        }
+
+        .boxes-visual {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .box-item {
+            background: #fff9eb;
+            border: 2px solid var(--accent);
+            border-radius: 14px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .box-item .icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .box-item strong {
+            font-family: 'Fredoka', sans-serif;
+            display: block;
+            color: var(--text-main);
+            font-size: 1.05rem;
+        }
+
+        .box-item span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .quote-note {
+            background-color: #fff8e7;
+            border-left: 5px solid var(--accent);
+            padding: 0.9rem 1.2rem;
+            border-radius: 8px;
+            font-style: italic;
+            margin: 1rem 0;
+        }
+
+        .interactive-section {
+            background: linear-gradient(135deg, #264653 0%, #1d3540 100%);
+            color: #ffffff;
+            border-radius: var(--border-radius);
+            padding: 2rem 2.5rem;
+            margin-top: 2.5rem;
+            box-shadow: 0 10px 25px rgba(38, 70, 83, 0.18);
+        }
+
+        .interactive-section h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .interactive-section p {
+            margin-bottom: 1.2rem;
+            opacity: 0.95;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .controls label {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .controls input {
+            width: 90px;
+            padding: 0.5rem 0.75rem;
+            font-size: 1.1rem;
+            font-family: 'Fredoka', sans-serif;
+            border-radius: 10px;
+            border: 2px solid var(--accent);
+            text-align: center;
+            color: var(--text-main);
+        }
+
+        .calc-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1.2rem;
+            border-radius: 12px;
+        }
+
+        .calc-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .calc-card small {
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .calc-card div {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.25rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding: 0 1rem;
+        }
+
+        footer strong {
+            color: var(--text-main);
+        }
+
+        @media (max-width: 600px) {
+            .page-card, .interactive-section {
+                padding: 1.6rem 1.35rem;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <span class="badge">Factorización por factor común</span>
+        <h1>Las cajas de la feria escolar</h1>
+        <p class="subtitle">Una historia educativa sobre cómo las matemáticas ayudan a organizar y resolver problemas cotidianos.</p>
+    </header>
+
+    <main class="container">
+
+        <!-- Página 1 -->
+        <article class="page-card">
+            <div class="page-header">
+                <span class="page-number">Página 1</span>
+                <h2>Preparativos para la feria</h2>
+            </div>
+            <p>En la escuela de Daniela se organizó una feria para reunir fondos destinados a la biblioteca. Cada curso prepararía productos para vender y el grupo de Daniela estaría encargado de empacar recuerdos y cuadernos decorados.</p>
+            <p>Al revisar los materiales, encontraron que necesitaban preparar <span class="math-inline">8x + 12</span> paquetes de recuerdos, donde <span class="math-inline">x</span> representaba una cantidad de paquetes que podía variar según las inscripciones. La encargada del grupo les pidió expresar esa cantidad de una forma más sencilla para calcular cuántas cajas grandes debían usar.</p>
+            <p>Daniela miró la expresión y pensó que los números <strong>8</strong> y <strong>12</strong> tenían algo en común. Su compañero Luis propuso revisar también la letra, aunque el segundo término no tenía <span class="math-inline">x</span>. Decidieron recordar lo aprendido sobre el <strong>factor común</strong>.</p>
+        </article>
+
+        <!-- Página 2 -->
+        <article class="page-card">
+            <div class="page-header">
+                <span class="page-number">Página 2</span>
+                <h2>Buscan lo que se repite</h2>
+            </div>
+            <p>La profesora les explicó que el <strong>factor común</strong> es el número, la letra o la combinación que aparece en todos los términos de una expresión. En <span class="math-inline">8x + 12</span> ambos números se pueden dividir entre <strong>4</strong>.</p>
+            <div class="math-box">
+                8x + 12 = 4(2x + 3)
+            </div>
+            <p>Daniela escribió <span class="math-inline">8x + 12 = 4(2x + 3)</span>. Para comprobarlo, multiplicó el 4 por cada término del paréntesis: <span class="math-inline">4 &times; 2x = 8x</span> y <span class="math-inline">4 &times; 3 = 12</span>. Así recuperó la expresión original.</p>
+            <p>Luis entendió que no se debe sacar un factor que no esté presente en todos los términos. Como 4 divide exactamente a 8 y a 12, era una buena elección. La expresión factorizada permitía ver que la cantidad total estaba formada por <strong>cuatro grupos iguales de <span class="math-inline">(2x + 3)</span> elementos</strong>.</p>
+        </article>
+
+        <!-- Página 3 -->
+        <article class="page-card">
+            <div class="page-header">
+                <span class="page-number">Página 3</span>
+                <h2>Resuelven el cálculo</h2>
+            </div>
+            <p>Para organizar la feria, decidieron usar <span class="math-inline">x = 5</span> como ejemplo de cantidad adicional de paquetes. Sustituyeron ese valor en la expresión original:</p>
+            <div class="math-box">
+                8(5) + 12 = 40 + 12 = 52
+            </div>
+            <p>Después utilizaron la forma factorizada:</p>
+            <div class="math-box">
+                4(2(5) + 3) = 4(10 + 3) = 4 &times; 13 = 52
+            </div>
+            <p>Los resultados coincidieron. Esto confirmó que la factorización estaba correcta. Daniela explicó que podían organizar los <strong>52 elementos en cuatro grupos de 13</strong>, lo que facilitaría repartirlos y empacarlos.</p>
+            <p>La operación no cambió la cantidad total, solamente mostró otra manera de escribirla. Esa era la utilidad del factor común en el problema.</p>
+        </article>
+
+        <!-- Página 4 -->
+        <article class="page-card">
+            <div class="page-header">
+                <span class="page-number">Página 4</span>
+                <h2>Preparan las cajas</h2>
+            </div>
+            <p>El grupo decidió colocar 13 elementos en cada caja grande y preparar cuatro cajas. En cada una pusieron una combinación de recuerdos y cuadernos, siguiendo una lista para que ninguna quedara incompleta.</p>
+
+            <div class="boxes-visual" aria-label="Representación de las 4 cajas con 2x + 3 elementos cada una">
+                <div class="box-item">
+                    <span class="icon">📦</span>
+                    <strong>Caja 1</strong>
+                    <span>2x + 3 (13 elem.)</span>
+                </div>
+                <div class="box-item">
+                    <span class="icon">📦</span>
+                    <strong>Caja 2</strong>
+                    <span>2x + 3 (13 elem.)</span>
+                </div>
+                <div class="box-item">
+                    <span class="icon">📦</span>
+                    <strong>Caja 3</strong>
+                    <span>2x + 3 (13 elem.)</span>
+                </div>
+                <div class="box-item">
+                    <span class="icon">📦</span>
+                    <strong>Caja 4</strong>
+                    <span>2x + 3 (13 elem.)</span>
+                </div>
+            </div>
+
+            <p>Luis anotó en una cartulina el procedimiento matemático y Daniela dibujó cuatro cajas para representar los grupos. Debajo escribió:</p>
+            <div class="math-box">
+                8x + 12 = 4(2x + 3)
+            </div>
+            <div class="quote-note">
+                «Sacamos 4 porque es el mayor número que divide a 8 y a 12 sin dejar residuo».
+            </div>
+            <p>La profesora revisó el trabajo y les recomendó incluir la comprobación mediante la <strong>propiedad distributiva</strong>. Al hacerlo, todos pudieron observar que <span class="math-inline">4(2x + 3)</span> vuelve a convertirse en <span class="math-inline">8x + 12</span>. La feria ya tenía sus materiales ordenados y el equipo comprendió cómo las matemáticas ayudaban a organizar una actividad escolar.</p>
+        </article>
+
+        <!-- Página 5 -->
+        <article class="page-card">
+            <div class="page-header">
+                <span class="page-number">Página 5</span>
+                <h2>La feria comienza</h2>
+            </div>
+            <p>El día de la feria, las cuatro cajas llegaron completas a las mesas de venta. Los estudiantes repartieron los productos sin confusiones y pudieron atender a los visitantes con rapidez.</p>
+            <p>Daniela contó que la parte más útil fue identificar el número que se repetía en todos los términos. Luis agregó que comprobar multiplicando era importante para evitar errores. La profesora destacó que el factor común permite simplificar expresiones y reconocer grupos iguales.</p>
+            <p>El caso utilizado fue la factorización por factor común: <span class="math-inline">8x + 12 = 4(2x + 3)</span>. Gracias a este procedimiento, el grupo organizó los paquetes en cuatro grupos iguales y resolvió su dificultad.</p>
+        </article>
+
+        <!-- Simulador Interactivo -->
+        <section class="interactive-section" aria-label="Comprobador interactivo de la historia">
+            <h3>🧮 ¡Prueba con otros valores de x!</h3>
+            <p>Cambia el valor de <strong>x</strong> para comprobar cómo la expresión original y la factorizada siempre dan el mismo total repartido en 4 cajas iguales.</p>
+            <div class="controls">
+                <label for="x-input">Valor de x:</label>
+                <input type="number" id="x-input" value="5" min="1" max="100">
+            </div>
+            <div class="calc-results">
+                <div class="calc-card">
+                    <small>Expresión original: 8x + 12</small>
+                    <div id="orig-res">8(5) + 12 = 52</div>
+                </div>
+                <div class="calc-card">
+                    <small>Forma factorizada: 4(2x + 3)</small>
+                    <div id="fact-res">4(2(5) + 3) = 4 &times; 13 = 52</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p><strong>Fin.</strong> Creador: ChatGPT (IA).</p>
+        <p>Historia educativa original creada por ChatGPT (IA).</p>
+    </footer>
+
+    <script>
+        const xInput = document.getElementById('x-input');
+        const origRes = document.getElementById('orig-res');
+        const factRes = document.getElementById('fact-res');
+
+        function updateCalculation() {
+            const x = parseInt(xInput.value, 10) || 0;
+            const total = 8 * x + 12;
+            const perBox = 2 * x + 3;
+
+            origRes.textContent = `8(${x}) + 12 = ${8 * x} + 12 = ${total}`;
+            factRes.textContent = `4(2(${x}) + 3) = 4 × ${perBox} = ${total}`;
+        }
+
+        xInput.addEventListener('input', updateCalculation);
+    </script>
+</body>
+</html>
